@@ -27,6 +27,9 @@ app.use(
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+// Trust proxy - required for secure cookies on Render
+app.set("trust proxy", 1);
+
 // --- SESSION & PASSPORT---
 if (!process.env.SESSION_SECRET) {
   console.warn(
