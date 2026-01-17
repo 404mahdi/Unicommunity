@@ -30,6 +30,7 @@ const TextReview = ({ written }) => {
     if (written?.userId) {
       fetchProfile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [written?.userId]);
 
   const content = written?.text || "";

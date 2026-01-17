@@ -40,6 +40,7 @@ const DiscussionThreads = ({ thread, currentUser }) => {
 
   useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thread?.posted_by]);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { IoSearchCircleSharp } from "react-icons/io5";
-import React, { useState } from "react";
+import React from "react";
 import { config } from "../../config";
 import "./searchbar.css";
 

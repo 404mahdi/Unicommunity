@@ -30,6 +30,7 @@ const ForumPage = () => {
 
   useEffect(() => {
     fetchCurrentUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCurrentUser = async () => {

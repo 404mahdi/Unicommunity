@@ -15,10 +15,6 @@ const Navbar = () => {
     return paths.some((path) => location.pathname === path);
   };
 
-  const toggleDropdown = (name) => {
-    setOpenDropdown(openDropdown === name ? null : name);
-  };
-
   return (
     <nav className="navbar">
       <div className="navbar-container">
