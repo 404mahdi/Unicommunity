@@ -1,0 +1,32 @@
+.course-block{
+    padding: 15px;
+    margin: 10px 0;
+    background-color: none;
+    margin-top: -35px;
+
+}
+
+.code {
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+    margin: 0;
+}
+
+.d {
+    color: #2776ea;
+}
+
+.name {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    font-weight: 800;
+    color: black;
+    margin: 5px 0 0 0;
+}
+
+.description {
+    font-size: 19px;
+    color: #636363;
+    margin: 10px 0 0 0;
+}
