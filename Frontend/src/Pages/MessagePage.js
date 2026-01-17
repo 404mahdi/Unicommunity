@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "../CSS/profilePage.css";
-
+import config from "../config";
 const getCurrentUser = async () => {
-  const res = await fetch("http://localhost:1760/api/auth/current", {
+  const res = await fetch(config.endpoints.auth.current, {
     credentials: "include",
   });
   if (!res.ok) throw new Error("Not authenticated");
@@ -27,7 +27,7 @@ const MessagePage = () => {
         const user = await getCurrentUser();
         setCurrentUser(user);
         // Fetch recipient info
-        const res = await fetch(`http://localhost:1760/api/users/${userId}`, {
+        const res = await fetch(`${config.endpoints.users}/${userId}`, {
           credentials: "include",
         });
         if (!res.ok) throw new Error("User not found");
@@ -44,8 +44,8 @@ const MessagePage = () => {
       if (isInitialLoad) setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:1760/api/messages/conversation/${currentUser._id}/${userId}`,
-          { credentials: "include" }
+          `${config.endpoints.messages}/conversation/${currentUser._id}/${userId}`,
+          { credentials: "include" },
         );
         if (!res.ok) throw new Error("Failed to load messages");
         setMessages(await res.json());
@@ -69,21 +69,18 @@ const MessagePage = () => {
     e.preventDefault();
     if (!newMsg.trim()) return;
     try {
-      const res = await fetch(
-        `http://localhost:1760/api/messages/send/${userId}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ senderId: currentUser._id, content: newMsg }),
-        }
-      );
+      const res = await fetch(`${config.endpoints.messages}/send/${userId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ senderId: currentUser._id, content: newMsg }),
+      });
       if (!res.ok) throw new Error("Send failed");
       setNewMsg("");
       // Refresh messages
       const updated = await fetch(
-        `http://localhost:1760/api/messages/conversation/${currentUser._id}/${userId}`,
-        { credentials: "include" }
+        `${config.endpoints.messages}/conversation/${currentUser._id}/${userId}`,
+        { credentials: "include" },
       );
       setMessages(await updated.json());
     } catch (err) {
@@ -96,11 +93,11 @@ const MessagePage = () => {
       return;
     try {
       const res = await fetch(
-        `http://localhost:1760/api/messages/conversation/${currentUser._id}/${userId}`,
+        `${config.endpoints.messages}/conversation/${currentUser._id}/${userId}`,
         {
           method: "DELETE",
           credentials: "include",
-        }
+        },
       );
       if (!res.ok) throw new Error("Delete failed");
       setMessages([]);

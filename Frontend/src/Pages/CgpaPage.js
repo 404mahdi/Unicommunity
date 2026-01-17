@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../CSS/cgpaPage.css";
+import config from "../config";
 
 const emptyCourse = {
   courseCode: "",
@@ -43,7 +44,7 @@ const CgpaPage = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await fetch("http://localhost:1760/api/auth/current", {
+      const res = await fetch(config.endpoints.auth.current, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Not authenticated");
@@ -60,7 +61,7 @@ const CgpaPage = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch(`http://localhost:1760/api/cgpa/${userId}`, {
+      const res = await fetch(`${config.endpoints.cgpa}/${userId}`, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to load");
@@ -110,15 +111,12 @@ const CgpaPage = () => {
     setSaving(true);
     setMessage("");
     try {
-      const res = await fetch(
-        `http://localhost:1760/api/cgpa/${user._id}/courses`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(payload),
-        }
-      );
+      const res = await fetch(`${config.endpoints.cgpa}/${user._id}/courses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
       if (!res.ok) throw new Error("Save failed");
       const data = await res.json();
       setCgpaData(data);
@@ -134,11 +132,11 @@ const CgpaPage = () => {
     if (!user?._id) return;
     try {
       const res = await fetch(
-        `http://localhost:1760/api/cgpa/${user._id}/courses/${courseId}`,
+        `${config.endpoints.cgpa}/${user._id}/courses/${courseId}`,
         {
           method: "DELETE",
           credentials: "include",
-        }
+        },
       );
       if (!res.ok) throw new Error("Delete failed");
       const data = await res.json();
@@ -152,13 +150,10 @@ const CgpaPage = () => {
     if (!user?._id) return;
     if (!window.confirm("Clear all courses from your CGPA calculator?")) return;
     try {
-      const res = await fetch(
-        `http://localhost:1760/api/cgpa/${user._id}/reset`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${config.endpoints.cgpa}/${user._id}/reset`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (!res.ok) throw new Error("Reset failed");
       const data = await res.json();
       setCgpaData(data);
@@ -216,7 +211,7 @@ const CgpaPage = () => {
     setMessage("");
     try {
       const res = await fetch(
-        `http://localhost:1760/api/cgpa/${user._id}/courses/${courseId}`,
+        `${config.endpoints.cgpa}/${user._id}/courses/${courseId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -229,7 +224,7 @@ const CgpaPage = () => {
             letterGrade: letter,
             semester: edits.semester,
           }),
-        }
+        },
       );
       if (!res.ok) throw new Error("Update failed");
       const data = await res.json();
@@ -248,11 +243,11 @@ const CgpaPage = () => {
     setMessage("");
     try {
       const res = await fetch(
-        `http://localhost:1760/api/cgpa/${user._id}/export/sheets`,
+        `${config.endpoints.cgpa}/${user._id}/export/sheets`,
         {
           method: "POST",
           credentials: "include",
-        }
+        },
       );
       const data = await res.json();
       if (!res.ok) {
@@ -262,7 +257,7 @@ const CgpaPage = () => {
       setMessage(
         url
           ? `Exported to Google Sheets. Open it here: ${url}`
-          : "Exported to Google Sheets."
+          : "Exported to Google Sheets.",
       );
       if (url) {
         window.open(url, "_blank", "noopener");
@@ -270,7 +265,7 @@ const CgpaPage = () => {
     } catch (err) {
       setMessage(
         err.message ||
-          "Export failed. Re-login to grant Google Drive/Sheets permission."
+          "Export failed. Re-login to grant Google Drive/Sheets permission.",
       );
     } finally {
       setExporting(false);
@@ -427,7 +422,7 @@ const CgpaPage = () => {
                             handleEditChange(
                               course._id,
                               "courseCode",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -437,7 +432,7 @@ const CgpaPage = () => {
                             handleEditChange(
                               course._id,
                               "courseName",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                           style={{ marginTop: 4 }}
@@ -453,7 +448,7 @@ const CgpaPage = () => {
                             handleEditChange(
                               course._id,
                               "credits",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -465,7 +460,7 @@ const CgpaPage = () => {
                             handleEditChange(
                               course._id,
                               "letterGrade",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -481,7 +476,7 @@ const CgpaPage = () => {
                             handleEditChange(
                               course._id,
                               "gradePoint",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -493,7 +488,7 @@ const CgpaPage = () => {
                             handleEditChange(
                               course._id,
                               "semester",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />

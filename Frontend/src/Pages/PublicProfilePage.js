@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import "../CSS/profilePage.css";
 import BadgeDisplay from "../Components/BadgeDisplay";
 import "../CSS/userSearchPage.css";
+import config from "../config";
 
 const PublicProfilePage = () => {
   const { userId } = useParams();
@@ -14,7 +15,7 @@ const PublicProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`http://localhost:1760/api/users/${userId}`, {
+        const res = await fetch(`${config.endpoints.users}/${userId}`, {
           credentials: "include",
         });
         if (!res.ok) throw new Error("User not found");
@@ -28,10 +29,9 @@ const PublicProfilePage = () => {
     };
     const fetchBadges = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:1760/api/users/${userId}/badges`,
-          { credentials: "include" }
-        );
+        const res = await fetch(`${config.endpoints.users}/${userId}/badges`, {
+          credentials: "include",
+        });
         if (res.ok) setBadges(await res.json());
       } catch {}
     };

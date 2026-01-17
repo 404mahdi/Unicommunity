@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/forumPage.css";
-import { config } from "../config";
+import config from "../config";
 
 const ForumPage = () => {
   const [forums, setForums] = useState([]);
@@ -57,7 +57,7 @@ const ForumPage = () => {
 
   const fetchForums = async () => {
     try {
-      const response = await fetch("http://localhost:1760/api/forums", {
+      const response = await fetch(config.endpoints.forums, {
         credentials: "include",
       });
       const data = await response.json();

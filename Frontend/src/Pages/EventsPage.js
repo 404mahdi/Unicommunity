@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "../CSS/eventsPage.css";
+import config from "../config";
 
 const defaultForm = {
   title: "",
@@ -42,7 +43,7 @@ const EventsPage = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await fetch("http://localhost:1760/api/auth/current", {
+      const res = await fetch(config.endpoints.auth.current, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Not authenticated");
@@ -64,8 +65,8 @@ const EventsPage = () => {
       if (filters.startDate) params.append("startDate", filters.startDate);
       if (filters.endDate) params.append("endDate", filters.endDate);
       const res = await fetch(
-        `http://localhost:1760/api/events?${params.toString()}`,
-        { credentials: "include" }
+        `${config.endpoints.events}?${params.toString()}`,
+        { credentials: "include" },
       );
       if (!res.ok) throw new Error("Failed to load events");
       const data = await res.json();
@@ -105,7 +106,7 @@ const EventsPage = () => {
               .filter(Boolean)
           : [],
       };
-      const res = await fetch("http://localhost:1760/api/events", {
+      const res = await fetch(config.endpoints.events, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -159,7 +160,7 @@ const EventsPage = () => {
               .filter(Boolean)
           : [],
       };
-      const res = await fetch(`http://localhost:1760/api/events/${editingId}`, {
+      const res = await fetch(`${config.endpoints.events}/${editingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -183,7 +184,7 @@ const EventsPage = () => {
     if (!user) return;
     if (!window.confirm("Delete this event?")) return;
     try {
-      const res = await fetch(`http://localhost:1760/api/events/${eventId}`, {
+      const res = await fetch(`${config.endpoints.events}/${eventId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -203,23 +204,20 @@ const EventsPage = () => {
   const handleRsvp = async (eventId, status) => {
     if (!user) return;
     try {
-      const res = await fetch(
-        `http://localhost:1760/api/events/${eventId}/rsvp`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({
-            userId: user._id,
-            userName: `${user.firstName} ${user.lastName}`,
-            rsvpStatus: status,
-          }),
-        }
-      );
+      const res = await fetch(`${config.endpoints.events}/${eventId}/rsvp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          userId: user._id,
+          userName: `${user.firstName} ${user.lastName}`,
+          rsvpStatus: status,
+        }),
+      });
       if (!res.ok) throw new Error("RSVP failed");
       const updated = await res.json();
       setEvents((prev) =>
-        prev.map((ev) => (ev._id === eventId ? updated : ev))
+        prev.map((ev) => (ev._id === eventId ? updated : ev)),
       );
     } catch (err) {
       setError("Could not update RSVP");
@@ -428,10 +426,10 @@ const EventsPage = () => {
             <div className="events-list">
               {events.map((ev) => {
                 const goingCount = ev.rsvps?.filter(
-                  (r) => r.rsvpStatus === "going"
+                  (r) => r.rsvpStatus === "going",
                 ).length;
                 const interestedCount = ev.rsvps?.filter(
-                  (r) => r.rsvpStatus === "interested"
+                  (r) => r.rsvpStatus === "interested",
                 ).length;
                 const myStatus = myRsvpStatus[ev._id];
                 const isOwner = ev.organizerId?.toString?.() === user?._id;
@@ -456,7 +454,7 @@ const EventsPage = () => {
                             onChange={(e) =>
                               handleEditFormChange(
                                 "description",
-                                e.target.value
+                                e.target.value,
                               )
                             }
                             rows={3}
@@ -471,7 +469,7 @@ const EventsPage = () => {
                               onChange={(e) =>
                                 handleEditFormChange(
                                   "eventType",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                             >
@@ -487,7 +485,7 @@ const EventsPage = () => {
                               onChange={(e) =>
                                 handleEditFormChange(
                                   "openForAll",
-                                  e.target.checked
+                                  e.target.checked,
                                 )
                               }
                             />
@@ -502,7 +500,7 @@ const EventsPage = () => {
                               onChange={(e) =>
                                 handleEditFormChange(
                                   "startDateTime",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                               required
@@ -516,7 +514,7 @@ const EventsPage = () => {
                               onChange={(e) =>
                                 handleEditFormChange(
                                   "endDateTime",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                               required
@@ -543,7 +541,7 @@ const EventsPage = () => {
                               onChange={(e) =>
                                 handleEditFormChange(
                                   "maxAttendees",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                             />

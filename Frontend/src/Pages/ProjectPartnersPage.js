@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../CSS/projectPartners.css";
+import config from "../config";
 
 const emptyForm = {
   projectName: "",
@@ -29,7 +30,7 @@ const ProjectPartnersPage = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await fetch("http://localhost:1760/api/auth/current", {
+      const res = await fetch(config.endpoints.auth.current, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Not authenticated");
@@ -49,10 +50,10 @@ const ProjectPartnersPage = () => {
       if (filters.skills.trim()) params.append("skills", filters.skills.trim());
       if (filters.q.trim()) params.append("q", filters.q.trim());
       const res = await fetch(
-        `http://localhost:1760/api/partners?${params.toString()}`,
+        `${config.endpoints.partners}?${params.toString()}`,
         {
           credentials: "include",
-        }
+        },
       );
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
@@ -81,7 +82,7 @@ const ProjectPartnersPage = () => {
         skills: form.skills,
         description: form.description,
       };
-      const res = await fetch("http://localhost:1760/api/partners", {
+      const res = await fetch(config.endpoints.partners, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -100,7 +101,7 @@ const ProjectPartnersPage = () => {
 
   const handleJoin = async (id) => {
     try {
-      const res = await fetch(`http://localhost:1760/api/partners/${id}/join`, {
+      const res = await fetch(`${config.endpoints.partners}/${id}/join`, {
         method: "POST",
         credentials: "include",
       });
@@ -114,13 +115,10 @@ const ProjectPartnersPage = () => {
 
   const handleTrello = async (id) => {
     try {
-      const res = await fetch(
-        `http://localhost:1760/api/partners/${id}/trello`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${config.endpoints.partners}/${id}/trello`, {
+        method: "POST",
+        credentials: "include",
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Trello creation failed");
       setListings((prev) => prev.map((l) => (l._id === id ? data : l)));
@@ -133,7 +131,7 @@ const ProjectPartnersPage = () => {
 
   const isMember = (listing) =>
     listing.members?.some(
-      (m) => m.userId === user?._id || m.userId === user?._id?.toString()
+      (m) => m.userId === user?._id || m.userId === user?._id?.toString(),
     );
 
   if (!user || loading) {

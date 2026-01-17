@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../CSS/instructorReviews.css";
+import config from "../config";
 
 const emptyForm = {
   instructorName: "",
@@ -31,7 +32,7 @@ const InstructorReviewsPage = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await fetch("http://localhost:1760/api/auth/current", {
+      const res = await fetch(config.endpoints.auth.current, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Not authenticated");
@@ -48,10 +49,10 @@ const InstructorReviewsPage = () => {
     try {
       const endpoint =
         search && search.trim() !== ""
-          ? `http://localhost:1760/api/instructor-reviews/search?q=${encodeURIComponent(
-              search.trim()
+          ? `${config.endpoints.instructorReviews}/search?q=${encodeURIComponent(
+              search.trim(),
             )}`
-          : "http://localhost:1760/api/instructor-reviews/all";
+          : `${config.endpoints.instructorReviews}/all`;
       const res = await fetch(endpoint, {
         credentials: "include",
       });
@@ -93,7 +94,7 @@ const InstructorReviewsPage = () => {
         setSaving(false);
         return;
       }
-      const res = await fetch("http://localhost:1760/api/instructor-reviews", {
+      const res = await fetch(config.endpoints.instructorReviews, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -232,16 +233,29 @@ const InstructorReviewsPage = () => {
           {reviews.length === 0 ? (
             <p className="empty">No instructor reviews yet.</p>
           ) : (
-            <div className="events-list" style={{ maxHeight: 520, overflowY: "auto", paddingRight: 6 }}>
+            <div
+              className="events-list"
+              style={{ maxHeight: 520, overflowY: "auto", paddingRight: 6 }}
+            >
               {reviews.map((rev) => (
                 <div className="event-card" key={rev._id}>
                   <div className="review-card-header">
                     <div>
-                      <h3 style={{ display: "flex", alignItems: "center", gap: 8, margin: 0 }}>
+                      <h3
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          margin: 0,
+                        }}
+                      >
                         <span>{rev.instructorName}</span>
-                        {rev.initial && <span className="pill">{rev.initial}</span>}
+                        {rev.initial && (
+                          <span className="pill">{rev.initial}</span>
+                        )}
                         <span className="pill count">
-                          {rev.reviewCount} review{rev.reviewCount === 1 ? "" : "s"}
+                          {rev.reviewCount} review
+                          {rev.reviewCount === 1 ? "" : "s"}
                         </span>
                       </h3>
                     </div>

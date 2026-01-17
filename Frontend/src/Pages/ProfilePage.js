@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/profilePage.css";
 import BadgeDisplay from "../Components/BadgeDisplay";
+import config from "../config";
 
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -40,10 +41,10 @@ const ProfilePage = () => {
   const fetchBadges = async () => {
     try {
       const response = await fetch(
-        `http://localhost:1760/api/users/${userId}/badges`,
+        `${config.endpoints.users}/${userId}/badges`,
         {
           credentials: "include",
-        }
+        },
       );
       if (response.ok) {
         const data = await response.json();
@@ -56,7 +57,7 @@ const ProfilePage = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await fetch("http://localhost:1760/api/auth/current", {
+      const response = await fetch(config.endpoints.auth.current, {
         credentials: "include",
       });
       if (response.ok) {
@@ -89,12 +90,9 @@ const ProfilePage = () => {
   const fetchProfile = async () => {
     if (!userId) return;
     try {
-      const response = await fetch(
-        `http://localhost:1760/api/users/${userId}`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${config.endpoints.users}/${userId}`, {
+        credentials: "include",
+      });
       const data = await response.json();
       setProfile({
         firstName: data.firstName || "",
@@ -123,26 +121,23 @@ const ProfilePage = () => {
 
   const handleSaveProfile = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:1760/api/users/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
+      const response = await fetch(`${config.endpoints.users}/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          bio: profile.bio,
+          socialLinks: {
+            linkedIn: profile.linkedIn,
+            github: profile.github,
+            portfolio: profile.portfolio,
           },
-          credentials: "include",
-          body: JSON.stringify({
-            bio: profile.bio,
-            socialLinks: {
-              linkedIn: profile.linkedIn,
-              github: profile.github,
-              portfolio: profile.portfolio,
-            },
-            currentCourses: profile.currentCourses,
-            completedCourses: profile.completedCourses,
-          }),
-        }
-      );
+          currentCourses: profile.currentCourses,
+          completedCourses: profile.completedCourses,
+        }),
+      });
 
       if (response.ok) {
         setIsEditing(false);
@@ -176,14 +171,14 @@ const ProfilePage = () => {
           newCourse.type === "completed"
             ? parseFloat(newCourse.cgpa)
             : newCourse.cgpa
-            ? parseFloat(newCourse.cgpa)
-            : undefined,
+              ? parseFloat(newCourse.cgpa)
+              : undefined,
         credits:
           newCourse.type === "completed"
             ? parseFloat(newCourse.credits || "3")
             : newCourse.credits
-            ? parseFloat(newCourse.credits)
-            : 3,
+              ? parseFloat(newCourse.credits)
+              : 3,
       };
 
       if (newCourse.type === "current") {
@@ -231,7 +226,7 @@ const ProfilePage = () => {
     let updatedCourse = { ...course };
     if (to === "completed") {
       const entered = prompt(
-        "Enter CGPA (0-4) for this course before marking as completed:"
+        "Enter CGPA (0-4) for this course before marking as completed:",
       );
       const gp = entered !== null ? parseFloat(entered) : NaN;
       if (Number.isNaN(gp) || gp < 0 || gp > 4) {
