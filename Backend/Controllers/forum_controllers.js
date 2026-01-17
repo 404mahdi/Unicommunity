@@ -1,5 +1,6 @@
 const Forum = require("../Models/forum_model");
 const User = require("../Models/user_model");
+const UserContribution = require("../Models/contribution_model");
 
 // GET Request to get all forums
 const getAllForums = async (req, res) => {
@@ -20,7 +21,7 @@ const getForumByCourse = async (req, res) => {
     const { courseCode } = req.params;
     const forum = await Forum.findOne({ courseCode }).populate(
       "members",
-      "firstName lastName email photo"
+      "firstName lastName email photo",
     );
 
     if (!forum) {
@@ -56,6 +57,19 @@ const createForum = async (req, res) => {
 
     // Award Hello World badge for forum creation
     if (userId) await checkHelloWorldBadge(userId);
+
+    // Increment forum contribution
+    if (userId) {
+      try {
+        await UserContribution.findOneAndUpdate(
+          { userId },
+          { $inc: { forum: 1 } },
+          { upsert: true, setDefaultsOnInsert: true },
+        );
+      } catch (contribError) {
+        console.error("Error updating forum contribution:", contribError);
+      }
+    }
 
     res.status(201).json(forum);
   } catch (error) {

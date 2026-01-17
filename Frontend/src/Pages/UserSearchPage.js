@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../CSS/profilePage.css";
 import "../CSS/userSearchPage.css";
+import { config } from "../config";
 
 const UserSearchPage = () => {
   const [query, setQuery] = useState("");
@@ -8,18 +9,45 @@ const UserSearchPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Fetch all users on mount
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+
+  const fetchAllUsers = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(config.endpoints.users, {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to fetch users");
+      const data = await res.json();
+      setResults(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError("Could not fetch users");
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
+    if (!query.trim()) {
+      fetchAllUsers();
+      return;
+    }
     setLoading(true);
     setError("");
     try {
       const res = await fetch(
-        `http://localhost:1760/api/users/search?q=${encodeURIComponent(query)}`,
-        { credentials: "include" }
+        `${config.endpoints.users}/search?q=${encodeURIComponent(query)}`,
+        { credentials: "include" },
       );
       if (!res.ok) throw new Error("Search failed");
       const data = await res.json();
-      setResults(data);
+      setResults(Array.isArray(data) ? data : []);
     } catch (err) {
       setError("Could not fetch users");
       setResults([]);

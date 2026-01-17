@@ -2,6 +2,8 @@ const express = require("express");
 const passport = require("passport");
 const router = express.Router();
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+
 // 1. Initiate Google Login
 // Scope determines what user information you request from Google
 router.get(
@@ -15,19 +17,19 @@ router.get(
     ],
     accessType: "offline",
     prompt: "consent",
-  })
+  }),
 );
 
 // 2. Google Callback Route
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000/login",
+    failureRedirect: `${FRONTEND_URL}/login`,
   }),
   (req, res) => {
     // req.user always exists here because passport creates user if not found
-    res.redirect("http://localhost:3000/profile");
-  }
+    res.redirect(`${FRONTEND_URL}/profile`);
+  },
 );
 
 // Get current authenticated user
@@ -46,7 +48,7 @@ router.get("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.redirect("http://localhost:3000/login"); // Redirect to login page
+    res.redirect(`${FRONTEND_URL}/login`); // Redirect to login page
   });
 });
 

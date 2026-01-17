@@ -68,10 +68,17 @@ const getUserConversations = async (req, res) => {
 const deleteMessage = async (req, res) => {
   try {
     const { messageId } = req.params;
-    const message = await Message.findByIdAndDelete(messageId);
+    const message = await Message.findById(messageId);
     if (!message) {
       return res.status(404).json({ error: "Message not found" });
     }
+    // Check if user is the sender of the message
+    if (message.sender.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own messages" });
+    }
+    await Message.findByIdAndDelete(messageId);
     res.status(200).json({ message: "Message deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -82,6 +89,15 @@ const deleteMessage = async (req, res) => {
 const deleteConversation = async (req, res) => {
   try {
     const { userId1, userId2 } = req.params;
+    // Only allow users to delete their own conversations
+    if (
+      userId1 !== req.user._id.toString() &&
+      userId2 !== req.user._id.toString()
+    ) {
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own conversations" });
+    }
     const result = await Message.deleteMany({
       $or: [
         { sender: userId1, recipient: userId2 },

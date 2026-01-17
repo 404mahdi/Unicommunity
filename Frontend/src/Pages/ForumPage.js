@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/forumPage.css";
+import { config } from "../config";
 
 const ForumPage = () => {
   const [forums, setForums] = useState([]);
@@ -33,7 +34,7 @@ const ForumPage = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await fetch("http://localhost:1760/api/auth/current", {
+      const response = await fetch(config.endpoints.auth.current, {
         credentials: "include",
       });
       if (response.ok) {
@@ -55,23 +56,28 @@ const ForumPage = () => {
 
   const fetchForums = async () => {
     try {
-      const response = await fetch("http://localhost:1760/api/forums");
+      const response = await fetch("http://localhost:1760/api/forums", {
+        credentials: "include",
+      });
       const data = await response.json();
-      setForums(data);
+      setForums(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching forums:", error);
+      setForums([]);
     }
   };
 
   const fetchForumResources = async (courseCode) => {
     try {
       const response = await fetch(
-        `http://localhost:1760/api/forums/${courseCode}/resources`
+        `${config.endpoints.forums}/${courseCode}/resources`,
+        { credentials: "include" },
       );
       const data = await response.json();
-      setResources(data);
+      setResources(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching resources:", error);
+      setResources([]);
     }
   };
 
@@ -83,11 +89,12 @@ const ForumPage = () => {
   const handleCreateForum = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:1760/api/forums", {
+      const response = await fetch(config.endpoints.forums, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           ...newForum,
           userId,
@@ -112,21 +119,22 @@ const ForumPage = () => {
   const handleJoinForum = async (courseCode) => {
     try {
       const response = await fetch(
-        `http://localhost:1760/api/forums/${courseCode}/join`,
+        `${config.endpoints.forums}/${courseCode}/join`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({ userId }),
-        }
+        },
       );
 
       if (response.ok) {
         alert("Joined forum successfully!");
         // Update selectedForum members immediately for UI feedback
         setSelectedForum((prev) =>
-          prev ? { ...prev, members: [...(prev.members || []), userId] } : prev
+          prev ? { ...prev, members: [...(prev.members || []), userId] } : prev,
         );
         fetchForums();
       } else {
@@ -206,7 +214,7 @@ const ForumPage = () => {
   const sendUploadRequest = async (payload) => {
     try {
       const response = await fetch(
-        `http://localhost:1760/api/forums/${selectedForum.courseCode}/resources`,
+        `${config.endpoints.forums}/${selectedForum.courseCode}/resources`,
         {
           method: "POST",
           headers: {
@@ -214,7 +222,7 @@ const ForumPage = () => {
           },
           credentials: "include",
           body: JSON.stringify(payload),
-        }
+        },
       );
 
       if (response.ok) {
@@ -242,10 +250,11 @@ const ForumPage = () => {
   const handleDownload = async (resourceId, resource) => {
     try {
       await fetch(
-        `http://localhost:1760/api/forums/${selectedForum.courseCode}/resources/${resourceId}/download`,
+        `${config.endpoints.forums}/${selectedForum.courseCode}/resources/${resourceId}/download`,
         {
           method: "PUT",
-        }
+          credentials: "include",
+        },
       );
 
       // If file has fileData (stored in DB), download it
@@ -272,14 +281,15 @@ const ForumPage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:1760/api/forums/${selectedForum.courseCode}/resources/${resourceId}`,
+        `${config.endpoints.forums}/${selectedForum.courseCode}/resources/${resourceId}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({ userId }),
-        }
+        },
       );
 
       if (response.ok) {

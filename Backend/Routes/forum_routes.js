@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { requireAuth } = require("../Middleware/auth");
 const {
   getAllForums,
   getForumByCourse,
@@ -10,6 +11,9 @@ const {
   incrementDownload,
   deleteResource,
 } = require("../Controllers/forum_controllers");
+
+// All routes require authentication
+router.use(requireAuth);
 
 // GET request to get all forums
 router.get("/", getAllForums);

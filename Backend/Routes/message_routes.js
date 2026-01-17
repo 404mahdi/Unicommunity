@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { requireAuth } = require("../Middleware/auth");
 const {
   sendMessage,
   getConversation,
@@ -8,35 +9,22 @@ const {
   deleteConversation,
 } = require("../Controllers/message_controllers");
 
-// All message routes are protected by inline authentication check
-router.post("/send/:recipientId", (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated())
-    return res.status(401).json({ error: "Unauthorized" });
-  sendMessage(req, res, next);
-});
-router.get("/conversation/:userId1/:userId2", (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated())
-    return res.status(401).json({ error: "Unauthorized" });
-  getConversation(req, res, next);
-});
-router.get("/conversations/:userId", (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated())
-    return res.status(401).json({ error: "Unauthorized" });
-  getUserConversations(req, res, next);
-});
+// All message routes require authentication
+router.use(requireAuth);
+
+// Send a message
+router.post("/send/:recipientId", sendMessage);
+
+// Get conversation between two users
+router.get("/conversation/:userId1/:userId2", getConversation);
+
+// Get all conversations for a user
+router.get("/conversations/:userId", getUserConversations);
 
 // Delete a specific message
-router.delete("/:messageId", (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated())
-    return res.status(401).json({ error: "Unauthorized" });
-  deleteMessage(req, res, next);
-});
+router.delete("/:messageId", deleteMessage);
 
 // Delete entire conversation between two users
-router.delete("/conversation/:userId1/:userId2", (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated())
-    return res.status(401).json({ error: "Unauthorized" });
-  deleteConversation(req, res, next);
-});
+router.delete("/conversation/:userId1/:userId2", deleteConversation);
 
 module.exports = router;

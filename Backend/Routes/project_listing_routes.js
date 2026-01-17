@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { requireAuth } = require("../Middleware/auth");
 const {
   createListing,
   listListings,
@@ -7,13 +8,7 @@ const {
   createTrelloForListing,
 } = require("../Controllers/project_listing_controllers");
 
-// Auth wrapper
-const requireAuth = (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated())
-    return res.status(401).json({ error: "Unauthorized" });
-  next();
-};
-
+// All routes require authentication
 router.use(requireAuth);
 
 router.post("/", createListing);

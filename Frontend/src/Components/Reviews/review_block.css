@@ -1,101 +1,108 @@
 .main-container {
   margin: 0;
-  background-color: #f4fcf4;
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+  padding: var(--spacing-xl) 0;
 }
+
 .each-box {
-  border-radius: 10px;
-  margin: 0 auto;
-  width: 50%;
+  border-radius: var(--radius-md);
+  margin: 0 auto var(--spacing-sm) auto;
+  width: 90%;
+  max-width: 900px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 5px;
-  padding-left: 30px;
-  height: 250px;
-  background-color: white;
-  box-shadow: 0 0px 8px #2776ea;
-  margin-bottom: 12px;
+  padding: var(--spacing-xl);
+  min-height: 280px;
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color-light);
+  transition: box-shadow 0.3s ease;
+}
+
+.each-box:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .course-info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--spacing-md);
+  flex: 1;
 }
 
 .course-code {
-  color: #000068;
-  font-size: 24px;
-  margin-top: 20px;
-  font-family: "Inter", sans-serif;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: inherit;
 }
 
 .title {
-  font-size: 16px;
-  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-family: inherit;
 }
 
 .radar {
-  margin-right: 40px;
-  transform: scale(1.3);
+  margin-right: var(--spacing-lg);
+  max-width: 280px;
+  max-height: 280px;
 }
 
 .add-review {
-  background: #a64dff;
-  border-radius: 5px;
+  background: var(--accent-color);
+  border-radius: var(--radius-sm);
   width: 220px;
-  height: 40px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: var(--spacing-sm);
   cursor: pointer;
   border: none;
   font-weight: 600;
-  color: #ffffff;
+  color: white;
   font-family: inherit;
-  letter-spacing: 0.02em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  transition: all 0.2s ease;
 }
+
 .view-review {
-  background: #4d4dff;
-  border-radius: 5px;
+  background: var(--primary-color);
+  border-radius: var(--radius-sm);
   width: 220px;
-  height: 40px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: var(--spacing-sm);
   cursor: pointer;
   border: none;
   font-weight: 600;
-  color: #ffffff;
+  color: white;
   font-family: inherit;
-  letter-spacing: 0.02em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .add-review:hover,
 .view-review:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(39, 118, 234, 0.35);
+  box-shadow: var(--shadow-md);
+}
+
+.add-review:hover {
+  background: #8c3ee3;
+}
+
+.view-review:hover {
+  background: var(--primary-hover);
 }
 
 .add-review:focus-visible,
 .view-review:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(39, 118, 234, 0.45);
-}
-
-.add-review.is-active,
-.view-review.is-active {
-  transform: translateY(1px);
-  box-shadow: 0 8px 18px rgba(39, 118, 234, 0.4);
-  filter: brightness(0.95);
-}
-
-.add-review.is-active {
-  background: #8c3ee3;
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .view-review.is-active {
@@ -117,34 +124,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
-  width: 50%;
-  background-color: white;
-  box-shadow: 0 0px 8px #2776ea;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  padding: 10px;
+  margin: 0 auto var(--spacing-lg) auto;
+  width: 90%;
+  max-width: 900px;
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--border-color-light);
 }
 
 .rating-btn {
   width: 35px;
   height: 35px;
-  border-radius: 30%;
-  border: 1px solid #2776ea;
-  background: white;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--primary-color);
+  background: var(--bg-primary);
   cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.rating-btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-1px);
 }
 
 .rating-btn.active {
-  background: #2776ea;
+  background: var(--primary-color);
   color: white;
+  border-color: var(--primary-color);
 }
 
 .review-form {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--spacing-lg);
   width: 100%;
   justify-content: flex-start;
 }
@@ -152,54 +169,64 @@
 .rating-row {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-sm);
   min-width: 200px;
   flex: 1 1 auto;
 }
 
 .rating-row p {
   margin: 0;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .review-form textarea {
   width: 100%;
   min-height: 100px;
-  margin-top: 10px;
-  flex-basis: 100%; /* Forces textarea to take full width on new line */
+  margin-top: var(--spacing-sm);
+  flex-basis: 100%;
 }
 
 .submit-review {
-  border-radius: 10px;
-  background-color: #2776ea;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary-color);
   color: white;
-  padding: 10px 20px;
+  padding: var(--spacing-md) var(--spacing-xl);
   border: none;
   cursor: pointer;
   display: block;
-  margin: 0 auto;
-  flex-basis: 100%; /* Forces button to take full width on new line */
-  margin-top: 10px;
+  margin: var(--spacing-md) auto 0;
+  flex-basis: 100%;
+  font-weight: 600;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.submit-review:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .text-box {
   width: 100%;
   min-height: 120px;
-  padding: 12px 15px;
-
-  border-radius: 10px;
-  border: 1px solid #2776ea;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
   outline: none;
-
-  font-size: 14px;
+  font-size: 1rem;
   font-family: inherit;
-  resize: none;
-
+  resize: vertical;
   box-sizing: border-box;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
 }
 
 .text-box:focus {
-  box-shadow: 0 0 6px rgba(39, 118, 234, 0.6);
-  border-color: #2776ea;
+  box-shadow: 0 0 0 3px var(--primary-light);
+  border-color: var(--primary-color);
 }

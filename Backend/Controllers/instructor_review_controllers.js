@@ -1,4 +1,5 @@
 const InstructorReview = require("../Models/instructor_review_model");
+const UserContribution = require("../Models/contribution_model");
 
 // GET all instructor reviews (aggregated)
 const getInstructorReviews = async (req, res) => {
@@ -18,7 +19,9 @@ const getInstructorReviewByName = async (req, res) => {
       instructorName: new RegExp(`^${instructorName}$`, "i"),
     });
     if (!review) {
-      return res.status(404).json({ error: "No review found for this instructor" });
+      return res
+        .status(404)
+        .json({ error: "No review found for this instructor" });
     }
     res.status(200).json(review);
   } catch (error) {
@@ -70,7 +73,7 @@ const updateInstructorAggregate = async (review) => {
             }
           : {}),
       },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
   } catch (err) {
     console.error("Error updating instructor aggregate: ", err.message);
@@ -98,7 +101,10 @@ const createInstructorReview = async (req, res) => {
     ) {
       return res
         .status(400)
-        .json({ error: "instructorName, clarity, fairness, and helpfulness are required" });
+        .json({
+          error:
+            "instructorName, clarity, fairness, and helpfulness are required",
+        });
     }
 
     const review = {
@@ -112,6 +118,21 @@ const createInstructorReview = async (req, res) => {
     };
 
     await updateInstructorAggregate(review);
+
+    // Increment instructor review contribution
+    try {
+      await UserContribution.findOneAndUpdate(
+        { userId: reviewed_by },
+        { $inc: { instructor_review: 1 } },
+        { upsert: true, setDefaultsOnInsert: true },
+      );
+    } catch (contribError) {
+      console.error(
+        "Error updating instructor review contribution:",
+        contribError,
+      );
+    }
+
     res.status(201).json(review);
   } catch (error) {
     res.status(400).json({ error: error.message });

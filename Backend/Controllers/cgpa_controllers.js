@@ -45,7 +45,7 @@ async function syncProfileCoursesToCgpa(userId) {
     const letterGrade = mapGradePointToLetter(gradePoint);
 
     const existing = cgpaData.courses.find(
-      (c) => c.courseCode === code || c.courseName === name
+      (c) => c.courseCode === code || c.courseName === name,
     );
     if (existing) {
       const before =
@@ -113,18 +113,21 @@ const addCourse = async (req, res) => {
       gradePoint === undefined ||
       Number.isNaN(Number(gradePoint))
     ) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "courseCode, courseName, and gradePoint are required",
-        });
+      return res.status(400).json({
+        error: "courseCode, courseName, and gradePoint are required",
+      });
     }
 
     const normalizedCredits = Number(credits);
-    const safeCredits = Number.isFinite(normalizedCredits) && normalizedCredits > 0 ? normalizedCredits : 3;
+    const safeCredits =
+      Number.isFinite(normalizedCredits) && normalizedCredits > 0
+        ? normalizedCredits
+        : 3;
     const safeGradePoint = Number(gradePoint);
-    const safeLetter = letterGrade && letterGrade.trim() !== "" ? letterGrade.trim().toUpperCase() : mapGradePointToLetter(safeGradePoint);
+    const safeLetter =
+      letterGrade && letterGrade.trim() !== ""
+        ? letterGrade.trim().toUpperCase()
+        : mapGradePointToLetter(safeGradePoint);
 
     let cgpaData = await CGPACalculator.findOne({ userId });
 
@@ -313,21 +316,16 @@ const exportToGoogleSheets = async (req, res) => {
     ]);
     const summaryRows = [
       ["", "", "", "Total Credits", cgpaData.totalCredits],
-      [
-        "",
-        "",
-        "",
-        "Current CGPA",
-        Number(cgpaData.currentCGPA) || 0,
-      ],
+      ["", "", "", "Current CGPA", Number(cgpaData.currentCGPA) || 0],
     ];
     const values = [header, ...courseRows, ...summaryRows];
 
     // Authorize with Google using the stored refresh token
+    const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:1760";
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      "http://localhost:1760/api/auth/google/callback"
+      `${BACKEND_URL}/api/auth/google/callback`,
     );
     oauth2Client.setCredentials({ refresh_token: user.googleRefreshToken });
     const sheets = google.sheets({ version: "v4", auth: oauth2Client });
@@ -359,7 +357,10 @@ const exportToGoogleSheets = async (req, res) => {
     console.error("Google Sheets export failed:", error);
     res
       .status(500)
-      .json({ error: "Failed to export to Google Sheets", detail: error.message });
+      .json({
+        error: "Failed to export to Google Sheets",
+        detail: error.message,
+      });
   }
 };
 

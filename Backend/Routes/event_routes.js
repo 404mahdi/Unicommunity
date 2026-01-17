@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { requireAuth } = require("../Middleware/auth");
 const {
   getEvents,
   getEventById,
@@ -9,6 +10,9 @@ const {
   rsvpToEvent,
   removeRsvp,
 } = require("../Controllers/event_controllers");
+
+// All routes require authentication
+router.use(requireAuth);
 
 // GET request to get all events (with optional filters)
 router.get("/", getEvents);

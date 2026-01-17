@@ -1,21 +1,34 @@
 import { IoSearchCircleSharp } from "react-icons/io5";
 import React, { useState } from "react";
+import { config } from "../../config";
 import "./searchbar.css";
 
 const SearchBar = ({ setResults, input, setInput }) => {
   //const [input, setInput] = useState("");
 
   const fetchData = (value) => {
-    fetch(`http://localhost:1760/api/courses/getall`)
+    fetch(`${config.endpoints.courses}/getall`, {
+      credentials: "include",
+    })
       .then((response) => response.json())
       .then((json) => {
-        const results = json.filter((course) => {
-          return (
-            value &&
-            course.course_code.toLowerCase().includes(value.toLowerCase())
-          );
-        });
-        setResults(results);
+        // Ensure json is an array before filtering
+        if (Array.isArray(json)) {
+          const results = json.filter((course) => {
+            return (
+              value &&
+              course.course_code.toLowerCase().includes(value.toLowerCase())
+            );
+          });
+          setResults(results);
+        } else {
+          console.error("Expected array but got:", json);
+          setResults([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching courses:", error);
+        setResults([]);
       });
   };
   const handleChange = (value) => {

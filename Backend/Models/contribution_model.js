@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
 //add forum contribution
-const userContribution = new Schema(
-  {
-    userId: { type: String, required: true, unique: true },
-    discussion_thread: { type: Number, required: true },
-    discussion_comment: { type: Number, required: true },
-    review: { type: Number, required: true},
-})
-
+const userContribution = new Schema({
+  userId: { type: String, required: true, unique: true },
+  discussion_thread: { type: Number, required: true },
+  discussion_comment: { type: Number, required: true },
+  review: { type: Number, required: true },
+  instructor_review: { type: Number, default: 0 },
+  forum: { type: Number, default: 0 },
+});
 
 module.exports = mongoose.model("UserContribution", userContribution);

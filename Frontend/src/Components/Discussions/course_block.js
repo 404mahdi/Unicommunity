@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { config } from "../../config";
 import "./courseblock.css";
 
 const CourseBlock = ({ courseSelected }) => {
@@ -7,7 +8,7 @@ const CourseBlock = ({ courseSelected }) => {
   useEffect(() => {
     if (!courseSelected) return;
 
-    fetch(`http://localhost:1760/api/courses/${courseSelected}`)
+    fetch(`${config.endpoints.courses}/${courseSelected}`)
       .then((response) => response.json())
       .then((json) => {
         setCurrentCourseData(json);
@@ -22,7 +23,9 @@ const CourseBlock = ({ courseSelected }) => {
         <span className="d">D:</span>
         {currentCourseData.course_code}
       </p>
-      <p className="name" title="Course Title">{currentCourseData.course_name}</p>
+      <p className="name" title="Course Title">
+        {currentCourseData.course_name}
+      </p>
       <p className="description">{currentCourseData.course_description}</p>
     </div>
   );

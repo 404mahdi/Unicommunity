@@ -94,7 +94,7 @@ const updateEvent = async (req, res) => {
     }
 
     // Check if user is the organizer
-    if (event.organizerId.toString() !== req.body.userId) {
+    if (event.organizerId.toString() !== req.user._id.toString()) {
       return res
         .status(403)
         .json({ error: "Only the organizer can update this event" });
@@ -111,7 +111,7 @@ const updateEvent = async (req, res) => {
       },
       {
         new: true,
-      }
+      },
     );
     res.status(200).json(updatedEvent);
   } catch (error) {
@@ -130,7 +130,7 @@ const deleteEvent = async (req, res) => {
     }
 
     // Check if user is the organizer
-    if (event.organizerId.toString() !== req.body.userId) {
+    if (event.organizerId.toString() !== req.user._id.toString()) {
       return res
         .status(403)
         .json({ error: "Only the organizer can delete this event" });
@@ -164,7 +164,7 @@ const rsvpToEvent = async (req, res) => {
     // Check if max attendees limit reached (only for 'going' status)
     if (rsvpStatus === "going" && event.maxAttendees) {
       const goingCount = event.rsvps.filter(
-        (rsvp) => rsvp.rsvpStatus === "going"
+        (rsvp) => rsvp.rsvpStatus === "going",
       ).length;
       if (goingCount >= event.maxAttendees) {
         return res.status(400).json({ error: "Event is full" });
@@ -173,7 +173,7 @@ const rsvpToEvent = async (req, res) => {
 
     // Check if user already RSVPed
     const existingRsvpIndex = event.rsvps.findIndex(
-      (rsvp) => rsvp.userId.toString() === userId
+      (rsvp) => rsvp.userId.toString() === userId,
     );
 
     if (existingRsvpIndex !== -1) {
@@ -210,7 +210,7 @@ const removeRsvp = async (req, res) => {
     }
 
     event.rsvps = event.rsvps.filter(
-      (rsvp) => rsvp.userId.toString() !== userId
+      (rsvp) => rsvp.userId.toString() !== userId,
     );
     await event.save();
 

@@ -18,13 +18,15 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:1760";
+
 passport.use(
   new GoogleStrategy(
     {
       passReqToCallback: true,
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:1760/api/auth/google/callback",
+      callbackURL: `${BACKEND_URL}/api/auth/google/callback`,
     },
     async (req, accessToken, refreshToken, profile, done) => {
       // check if user already exists in our db
@@ -80,8 +82,8 @@ passport.use(
         await checkSignupBadge(newUser._id);
         return done(null, newUser);
       }
-    }
-  )
+    },
+  ),
 );
 
 module.exports = passport;

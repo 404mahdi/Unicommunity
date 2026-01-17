@@ -11,26 +11,28 @@
 
 .hof-page {
   min-height: 100vh;
-  padding: 4rem 2rem 3rem;
+  max-height: 100vh;
+  padding: 2rem 2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1.5rem;
   background: var(--hof-bg);
   color: var(--hof-text);
   font-family: inherit;
+  overflow: hidden;
 }
 
 .hof-title {
-  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-size: clamp(2rem, 3.5vw, 3rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0;
 }
 
 .hof-subtitle {
-  font-size: 1rem;
+  font-size: 0.9rem;
   letter-spacing: 0.05em;
   color: var(--hof-muted);
   margin: 0;
@@ -48,12 +50,13 @@
 .hof-podium {
   width: 100%;
   max-width: 1200px;
-  min-height: 60vh;
+  flex: 1;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: 1.25rem;
   position: relative;
+  margin-top: 0.5rem;
 }
 
 .hof-loading {
@@ -64,15 +67,15 @@
 .hof-card {
   flex: 0 0 25%;
   max-width: 25%;
-  min-height: 50vh;
+  min-height: 35vh;
   background: var(--hof-card-bg);
-  border-radius: 32px;
-  padding: 2rem 1.5rem;
+  border-radius: 24px;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1rem;
+  gap: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(24px);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
@@ -91,19 +94,22 @@
 
 .hof-card--1 {
   order: 2;
-  transform: translateY(-10px);
+  transform: translateY(-20px);
   border-color: var(--hof-accent);
+  min-height: 38vh;
 }
 
 .hof-card--2 {
   order: 1;
-  transform: translateY(-10px);
+  transform: translateY(10px);
   border-color: var(--hof-accent-secondary);
+  min-height: 36vh;
 }
 
 .hof-card--3 {
   order: 3;
-  transform: translateY(35px);
+  transform: translateY(20px);
+  min-height: 35vh;
 }
 
 .hof-heart-row {
@@ -123,7 +129,10 @@
   color: var(--hof-muted);
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
     background 0.2s ease;
 }
 
@@ -157,11 +166,11 @@
 }
 
 .hof-avatar {
-  width: 140px;
-  height: 140px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 5px solid rgba(255, 255, 255, 0.35);
-  padding: 6px;
+  border: 4px solid rgba(255, 255, 255, 0.35);
+  padding: 4px;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent);
 }
 
@@ -174,7 +183,7 @@
 }
 
 .hof-name {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin: 0;
 }
@@ -188,11 +197,11 @@
 
 .hof-mini-stats div {
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 18px;
-  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  padding: 0.5rem 0.7rem;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
 }
 
 .hof-mini-stats span {
@@ -209,20 +218,20 @@
 
 .hof-stats {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.35rem;
   width: 100%;
   color: var(--hof-muted);
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .hof-stats span {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   letter-spacing: 0.05em;
 }
 
 .hof-stats strong {
   color: var(--hof-text);
-  font-size: 1.2rem;
+  font-size: 1.05rem;
 }
 
 .hof-placeholder {
