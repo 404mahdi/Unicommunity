@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const cors = require("cors");
 require("./Config/passport_config");
@@ -38,6 +39,13 @@ app.use(
     secret: process.env.SESSION_SECRET || "dev_secret_change_in_production",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: MONGO_URI,
+      touchAfter: 24 * 3600, // lazy session update
+      crypto: {
+        secret: process.env.SESSION_SECRET || "dev_secret_change_in_production",
+      },
+    }),
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
       secure: process.env.NODE_ENV === "production",
