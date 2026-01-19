@@ -35,46 +35,41 @@ Unicommunity is a MERN-stack platform that centralizes academic collaboration fo
 | **Profiles**           | User stats, badges, and activity history                                                              |
 
 ## Screenshots
+<img width="1918" height="908" alt="Screenshot 2026-01-20 022845" src="https://github.com/user-attachments/assets/a32afa4f-0064-48c2-be37-64ce33f1fe1f" />
 
 ### Course Reviews
 
-![Course Reviews](screenshots/course-reviews.png)
+<img width="1901" height="910" alt="Screenshot 2026-01-20 022823" src="https://github.com/user-attachments/assets/890eb933-fb83-4fce-a9bd-f1d6c29eea90" />
 
 ### Instructor Reviews
 
-![Instructor Reviews](screenshots/instructor-reviews.png)
+<img width="1900" height="904" alt="image" src="https://github.com/user-attachments/assets/22c24aea-46d4-4b79-b9ba-beeeb2f2f5d1" />
 
-### Discussion Forums
-
-![Discussion Forums](screenshots/discussion-forums.png)
 
 ### Resource Sharing
 
-![Resource Sharing](screenshots/resource-sharing.png)
+<img width="1912" height="907" alt="Screenshot 2026-01-20 022732" src="https://github.com/user-attachments/assets/7d852b1c-f478-4d3d-88c9-7f89beca8f9c" />
 
 ### Project Partners
 
-![Project Partners](screenshots/project-partners.png)
+<img width="1902" height="910" alt="Screenshot 2026-01-20 022607" src="https://github.com/user-attachments/assets/e87ba508-f99b-4c03-875f-14191100e2fc" />
 
 ### Hall of Fame
 
-![Hall of Fame](screenshots/hall-of-fame.png)
+<img width="1893" height="918" alt="Screenshot 2026-01-20 022422" src="https://github.com/user-attachments/assets/c7d6450a-8786-4070-85cf-bf8d0c6107b7" />
 
 ### CGPA Calculator
 
-![CGPA Calculator](screenshots/cgpa-calculator.png)
+<img width="1897" height="896" alt="Screenshot 2026-01-20 022650" src="https://github.com/user-attachments/assets/d4613ff2-9041-479c-8f71-ac5f65420cfc" />
 
-### Campus Events
+### Find Students
 
-![Campus Events](screenshots/campus-events.png)
-
-### Messaging
-
-![Messaging](screenshots/messaging.png)
+<img width="1900" height="900" alt="Screenshot 2026-01-20 022342" src="https://github.com/user-attachments/assets/3ee49fff-3877-4913-a730-5a5232c5b270" />
 
 ### User Profile
 
-![User Profile](screenshots/user-profile.png)
+<img width="1901" height="907" alt="Screenshot 2026-01-20 022304" src="https://github.com/user-attachments/assets/2d06890c-608e-469c-9207-0bd7ba2c5ae9" />
+
 
 ## Tech Stack
 
