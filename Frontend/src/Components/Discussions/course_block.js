@@ -8,7 +8,9 @@ const CourseBlock = ({ courseSelected }) => {
   useEffect(() => {
     if (!courseSelected) return;
 
-    fetch(`${config.endpoints.courses}/${courseSelected}`)
+    fetch(`${config.endpoints.courses}/${courseSelected}`, {
+      credentials: "include",
+    })
       .then((response) => response.json())
       .then((json) => {
         setCurrentCourseData(json);

@@ -75,6 +75,7 @@ const DiscussionThreads = ({ thread, currentUser }) => {
             userId: currentUser._id,
             content: trimmedText,
           }),
+          credentials: "include",
         },
       );
 
@@ -126,6 +127,7 @@ const DiscussionThreads = ({ thread, currentUser }) => {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: currentUser._id }),
+        credentials: "include",
       },
     );
     if (response.ok) {
@@ -149,6 +151,7 @@ const DiscussionThreads = ({ thread, currentUser }) => {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: currentUser._id }),
+        credentials: "include",
       },
     );
     if (response.ok) {

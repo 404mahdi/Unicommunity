@@ -29,7 +29,9 @@ const DiscussionPage = () => {
   useEffect(() => {
     if (!courseSelected) return;
 
-    fetch(`${config.endpoints.discussions}/${courseSelected}`)
+    fetch(`${config.endpoints.discussions}/${courseSelected}`, {
+      credentials: "include",
+    })
       .then((result) => result.json())
       .then((data) => setThreads(data))
       .catch((err) => console.error(err));
